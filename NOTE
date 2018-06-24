@@ -1,0 +1,19 @@
+$app->post("/biodata/", function (Request $request, Response $response){
+
+    $new_book = $request->getParsedBody();
+
+    $sql = "INSERT INTO biodata (email, nama, alamat, no_hp) VALUE (:email, :nama, :alamat, :no_hp)";
+    $stmt = $this->db->prepare($sql);
+
+    $data = [
+        ":email" => $new_book["email"],
+        ":nama" => $new_book["nama"],
+        ":alamat" => $new_book["alamat"],
+        ":no_hp" => $new_book["no_hp"]
+    ];
+
+    if($stmt->execute($data))
+       return $response->withJson(["status" => "success", "data" => "1"], 200);
+    
+    return $response->withJson(["status" => "failed", "data" => "0"], 200);
+});
